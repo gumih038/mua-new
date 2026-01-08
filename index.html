@@ -68,6 +68,20 @@
             background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='1'/%3E%3C/svg%3E");
         }
 
+        /* 共通画像フィルター (おしゃれな雰囲気統一) */
+        .image-filter {
+            filter: grayscale(20%) sepia(10%) brightness(95%) contrast(90%);
+            transition: filter 0.5s ease;
+        }
+        .group:hover .image-filter {
+            filter: grayscale(0%) sepia(0%) brightness(100%) contrast(100%);
+        }
+        /* ヒーロー背景用はホバー解除しない */
+        .hero-bg-filter {
+             filter: grayscale(20%) sepia(10%) brightness(80%) contrast(90%);
+        }
+
+
         /* 画像アニメーション */
         .reveal-img-wrapper {
             overflow: hidden;
@@ -130,6 +144,23 @@
                 margin-top: 2rem; 
             }
         }
+
+        /* Conceptセクションの横重なりレイアウト調整 (PC) */
+        @media (min-width: 768px) {
+            .concept-overlap-wrapper {
+                display: flex;
+                align-items: center;
+            }
+            .concept-image-box {
+                width: 60%;
+                margin-right: -10%; /* テキストボックスと重ねる */
+                z-index: 1;
+            }
+            .concept-text-box {
+                width: 50%;
+                z-index: 2;
+            }
+        }
     </style>
 </head>
 <body class="bg-mua-white relative">
@@ -139,7 +170,7 @@
     <!-- Header -->
     <header id="lp-header" class="fixed top-0 left-0 w-full z-[100] transition-all duration-500 py-4 px-5 md:py-6 md:px-12 mix-blend-difference text-white">
         <div class="flex justify-between items-center flex-col md:flex-row gap-4 md:gap-0">
-            <!-- ロゴ -->
+            <!-- ロゴ (テキストのみ) -->
             <div class="w-full md:w-auto flex justify-between items-center">
                 <h1 class="font-en text-xl md:text-xl tracking-widest cursor-pointer relative m-0 p-0 leading-none z-50">
                     <a href="#" class="no-underline text-inherit hover:opacity-70 transition-opacity">MUA</a>
@@ -147,7 +178,6 @@
             </div>
 
             <!-- Nav (PC & Mobile) -->
-            <!-- スマホでもPCのように並べる（横スクロール対応） -->
             <nav class="w-full md:w-auto overflow-x-auto no-scrollbar">
                 <div class="flex gap-8 md:gap-12 px-1 pb-1 md:pb-0 whitespace-nowrap">
                     <a href="#concept" class="font-en text-[11px] md:text-xs tracking-widest hover:opacity-50 transition-opacity no-underline text-inherit relative group">
@@ -182,27 +212,26 @@
             <img src="./IMG_0540 3.png" 
                  onerror="this.src='https://images.unsplash.com/photo-1519014816548-bf5fe059e98b?q=80&w=2070&auto=format&fit=crop'"
                  alt="MUA Atmosphere" 
-                 class="w-full h-full object-cover opacity-70">
+                 class="w-full h-full object-cover hero-bg-filter">
         </div>
         
         <div class="absolute inset-0 flex flex-col justify-center items-center text-center z-10 px-4">
             <div id="hero-content" class="flex flex-col items-center w-full max-w-sm">
-                <p class="font-en text-[10px] md:text-xs tracking-[0.4em] mb-6 md:mb-8 text-white/80 opacity-0 transform translate-y-4">Private Nail Salon</p>
-                
-                <!-- ロゴ -->
-                <div class="w-48 md:w-80 mb-8 md:mb-12 relative opacity-0 transform scale-95 flex justify-center" id="hero-logo">
-                    <img src="./logo.png" 
+                <!-- ロゴ (ロゴ白.pngを使用) -->
+                <div class="w-56 md:w-96 mb-8 md:mb-12 relative opacity-0 transform scale-95 flex justify-center" id="hero-logo">
+                    <!-- 白色ロゴの視認性を高めるためドロップシャドウを強化 -->
+                    <img src="./ロゴ白.png" 
                          onerror="this.classList.add('error')"
-                         alt="MUA" 
-                         class="w-full h-auto drop-shadow-lg block">
-                    <!-- ロゴ画像がない場合のテキスト -->
-                    <h1 class="logo-text-fallback font-en text-7xl md:text-9xl tracking-widest text-white m-0 leading-none font-thin">
+                         alt="MUA nailsalon" 
+                         class="w-full h-auto drop-shadow-[0_4px_6px_rgba(0,0,0,0.5)] block">
+                    <!-- ロゴ画像がない場合のテキストフォールバック -->
+                    <h1 class="logo-text-fallback font-en text-7xl md:text-9xl tracking-widest text-white m-0 leading-none font-thin drop-shadow-lg">
                         MUA
                     </h1>
                 </div>
 
                 <div class="overflow-hidden">
-                    <p id="hero-text" class="font-jp text-xs md:text-sm tracking-widest text-white/90 leading-loose opacity-0 transform translate-y-full">
+                    <p id="hero-text" class="font-jp text-xs md:text-sm tracking-widest text-white/90 leading-loose opacity-0 transform translate-y-full drop-shadow-md">
                         指先に、あなただけの魔法を。<br>
                         洗練されたプライベート空間で。
                     </p>
@@ -219,45 +248,54 @@
         </div>
     </section>
 
-    <!-- Concept -->
-    <section id="concept" class="py-32 md:py-60 px-6 md:px-0 bg-mua-white relative z-10">
-        <div class="max-w-4xl mx-auto flex flex-col md:flex-row items-start md:items-center gap-12 md:gap-32">
+    <!-- Concept Section (横重なりレイアウト) -->
+    <section id="concept" class="py-24 md:py-60 px-6 md:px-0 bg-mua-white relative z-10 overflow-hidden">
+        <div class="max-w-5xl mx-auto relative concept-overlap-wrapper">
             
-            <!-- 縦書きタイトル (PCのみ表示) -->
-            <div class="hidden md:block w-px h-64 bg-mua-black/10 relative ml-12 self-start md:self-auto trigger-line">
-                <span class="absolute top-0 -left-12 vertical-text font-en text-sm tracking-widest text-mua-gray">Concept</span>
+            <!-- ネイル部屋の画像 (PC: 左側配置, スマホ: 上部配置) -->
+            <div class="concept-image-box relative mb-12 md:mb-0 reveal-img-wrapper aspect-[4/3] md:aspect-[16/9]">
+                <div class="reveal-overlay"></div>
+                <!-- 画像本体 (共通フィルター適用) -->
+                <img src="./ネイル部屋.jpg" 
+                     onerror="this.src='https://images.unsplash.com/photo-1519014816548-bf5fe059e98b?q=80&w=2070&auto=format&fit=crop'"
+                     alt="Nail Room" 
+                     class="reveal-img object-cover w-full h-full image-filter">
             </div>
 
-            <!-- スマホ用タイトル -->
-            <div class="md:hidden w-full text-center mb-8 fade-in-up">
-                <span class="font-en text-sm tracking-widest text-mua-gray block">Concept</span>
-            </div>
+            <!-- テキストコンテンツ (PC: 右側重なり配置, スマホ: 下部重なり配置) -->
+            <div class="concept-text-box relative -mt-20 md:-mt-0 bg-white/90 md:bg-white/95 backdrop-blur-sm p-8 md:p-16 shadow-lg md:shadow-xl border border-white/50 md:border-none mx-4 md:mx-0 fade-in-up">
+                
+                <!-- スマホ用タイトル装飾 -->
+                <span class="md:hidden font-en text-xs tracking-widest text-mua-gray block mb-4 text-center">Concept</span>
 
-            <!-- 本文 -->
-            <div class="flex-1 text-left md:text-justify px-2 md:px-0 w-full">
-                <h2 class="font-jp text-2xl md:text-4xl mb-12 md:mb-20 tracking-wide font-medium m-0 text-mua-black leading-relaxed split-text text-center md:text-left">
+                <h2 class="font-jp text-2xl md:text-3xl mb-8 md:mb-10 tracking-wide font-medium m-0 text-mua-black leading-relaxed text-center md:text-left">
                     洗練と安らぎの<br>
                     プライベート空間
                 </h2>
                 
-                <div class="space-y-8 md:space-y-12 text-mua-black/80 font-light leading-loose tracking-wider fade-in-up text-sm md:text-base">
+                <div class="space-y-6 md:space-y-8 text-mua-black/80 font-light leading-loose tracking-wider text-sm md:text-base text-justify">
                     <p>
-                        MUAは、完全プライベートネイルサロンです。<br>
-                        ベージュとグレーを基調としたミニマルな空間で、<br>
+                        MUAは、完全プライベートネイルサロンです。<br class="hidden md:inline">
+                        ベージュとグレーを基調としたミニマルな空間で、<br class="hidden md:inline">
                         日常の喧騒を忘れ、あなただけの特別な時間をお過ごしください。
                     </p>
-                    
                     <p>
-                        トレンドを取り入れたニュアンスアートから、<br>
-                        指先を美しく魅せるオフィスネイルまで。<br>
+                        トレンドを取り入れたニュアンスアートから、<br class="hidden md:inline">
+                        指先を美しく魅せるオフィスネイルまで。<br class="hidden md:inline">
                         フィルイン技術で自爪を大切にしながら、理想の指先を叶えます。
                     </p>
                 </div>
+
+                <!-- 縦書きタイトル (PCのみ) -->
+                <div class="hidden md:block absolute -right-12 top-0 h-full w-px bg-mua-black/10">
+                    <span class="absolute top-0 -right-4 vertical-text font-en text-sm tracking-widest text-mua-gray h-full flex items-center">Concept</span>
+                </div>
             </div>
+
         </div>
     </section>
 
-    <!-- Works -->
+    <!-- Works (指定画像に変更 & 共通フィルター) -->
     <section id="works" class="py-32 md:py-40 bg-mua-white relative z-10 overflow-hidden">
         <div class="container mx-auto px-6 md:px-12 relative">
             
@@ -270,16 +308,15 @@
             </div>
 
             <!-- おしゃれな配置 (Masonry / Staggered Grid) -->
-            <!-- スマホ：2列で段違い、PC：大きく2カラムでパララックス -->
             <div class="grid grid-cols-2 md:grid-cols-2 gap-4 md:gap-32 w-full">
                 
                 <!-- Left Column / Odd Items -->
                 <div class="flex flex-col gap-8 md:gap-40 mt-0 md:mt-24">
-                    <!-- Item 1 -->
+                    <!-- Item 1 (works1.png) -->
                     <div class="group cursor-pointer w-full md:w-4/5 ml-auto fade-in-up">
                         <div class="reveal-img-wrapper aspect-[3/4]">
                             <div class="reveal-overlay"></div>
-                            <img src="https://images.unsplash.com/photo-1632515904838-8e6f1577c952?q=80&w=800&auto=format&fit=crop" class="reveal-img grayscale hover:grayscale-0 transition duration-700" alt="Nail 1">
+                            <img src="./works1.png" onerror="this.src='https://images.unsplash.com/photo-1632515904838-8e6f1577c952?q=80&w=800&auto=format&fit=crop'" class="reveal-img image-filter transition duration-700" alt="Nail 1">
                         </div>
                         <div class="hidden md:flex justify-between items-baseline mt-4 opacity-0 transform translate-y-4 group-hover:translate-y-0 opacity-100 transition duration-500 delay-100">
                             <span class="font-jp text-xs tracking-widest text-mua-gray">Nuance</span>
@@ -287,30 +324,30 @@
                         </div>
                     </div>
 
-                    <!-- Item 3 -->
+                    <!-- Item 3 (works3.png) -->
                     <div class="group cursor-pointer w-full md:w-4/5 mr-auto mt-8 md:mt-0 fade-in-up">
                         <div class="reveal-img-wrapper aspect-[3/4]">
                             <div class="reveal-overlay"></div>
-                            <img src="https://images.unsplash.com/photo-1522337660859-02fbefca4702?q=80&w=800&auto=format&fit=crop" class="reveal-img grayscale hover:grayscale-0 transition duration-700" alt="Nail 3">
+                            <img src="./works3.png" onerror="this.src='https://images.unsplash.com/photo-1522337660859-02fbefca4702?q=80&w=800&auto=format&fit=crop'" class="reveal-img image-filter transition duration-700" alt="Nail 3">
                         </div>
                     </div>
                 </div>
 
                 <!-- Right Column / Even Items -->
                 <div class="flex flex-col gap-8 md:gap-40 mt-12 md:-mt-24 parallax-col">
-                    <!-- Item 2 -->
+                    <!-- Item 2 (works2.png) -->
                     <div class="group cursor-pointer w-full md:w-4/5 mr-auto fade-in-up">
                         <div class="reveal-img-wrapper aspect-[3/4] md:aspect-[4/5]">
                             <div class="reveal-overlay"></div>
-                            <img src="https://images.unsplash.com/photo-1604654894610-df63bc536371?q=80&w=800&auto=format&fit=crop" class="reveal-img grayscale hover:grayscale-0 transition duration-700" alt="Nail 2">
+                            <img src="./works2.png" onerror="this.src='https://images.unsplash.com/photo-1604654894610-df63bc536371?q=80&w=800&auto=format&fit=crop'" class="reveal-img image-filter transition duration-700" alt="Nail 2">
                         </div>
                     </div>
 
-                    <!-- Item 4 -->
+                    <!-- Item 4 (works4.png) -->
                     <div class="group cursor-pointer w-full md:w-4/5 ml-auto mt-8 md:mt-0 fade-in-up">
                         <div class="reveal-img-wrapper aspect-[3/4]">
                             <div class="reveal-overlay"></div>
-                            <img src="https://images.unsplash.com/photo-1599695683915-d91984252328?q=80&w=800&auto=format&fit=crop" class="reveal-img grayscale hover:grayscale-0 transition duration-700" alt="Nail 4">
+                            <img src="./works4.png" onerror="this.src='https://images.unsplash.com/photo-1599695683915-d91984252328?q=80&w=800&auto=format&fit=crop'" class="reveal-img image-filter transition duration-700" alt="Nail 4">
                         </div>
                     </div>
                 </div>
@@ -318,10 +355,10 @@
         </div>
     </section>
 
-    <!-- Menu with Fixed Marble Background -->
+    <!-- Menu with Fixed Marble Background (共通フィルター適用) -->
     <section id="menu" class="py-32 md:py-48 relative z-10 bg-fixed-parallax" style="background-image: url('./背景 (2).png');">
-        <!-- 背景画像オーバーレイ（文字を読みやすくするため） -->
-        <div class="absolute inset-0 bg-white/70 backdrop-blur-[2px]"></div>
+        <!-- 背景画像オーバーレイ -->
+        <div class="absolute inset-0 bg-white/80 backdrop-blur-[3px]"></div>
 
         <div class="container mx-auto px-6 md:px-10 max-w-5xl relative z-20">
             <div class="text-center mb-20 md:mb-32 fade-in-up">
@@ -341,7 +378,7 @@
                         <!-- ワンカラー -->
                         <div class="menu-item group cursor-pointer flex gap-4 items-start fade-in-up">
                             <div class="w-20 h-20 md:w-24 md:h-24 flex-shrink-0 overflow-hidden shadow-sm">
-                                <img src="https://nailie.jp/_next/image?url=https%3A%2F%2Fproduction-nailie-api-default.s3.amazonaws.com%2Fmoai9o9ycQuZsaNzOOgdwqqDJ9EmuGKf_MENU_w400.jpg&w=256&q=75" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" alt="One Color">
+                                <img src="https://nailie.jp/_next/image?url=https%3A%2F%2Fproduction-nailie-api-default.s3.amazonaws.com%2Fmoai9o9ycQuZsaNzOOgdwqqDJ9EmuGKf_MENU_w400.jpg&w=256&q=75" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110 image-filter" alt="One Color">
                             </div>
                             <div class="flex-1 pt-1">
                                 <div class="flex justify-between items-baseline mb-2">
@@ -355,7 +392,7 @@
                         <!-- グラデーション -->
                         <div class="menu-item group cursor-pointer flex gap-4 items-start fade-in-up">
                             <div class="w-20 h-20 md:w-24 md:h-24 flex-shrink-0 overflow-hidden shadow-sm">
-                                <img src="https://nailie.jp/_next/image?url=https%3A%2F%2Fproduction-nailie-api-default.s3.amazonaws.com%2Fd120f8115ad4cdb0f6c663003eaf719c_MENU_w400.jpg&w=256&q=75" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" alt="Gradation">
+                                <img src="https://nailie.jp/_next/image?url=https%3A%2F%2Fproduction-nailie-api-default.s3.amazonaws.com%2Fd120f8115ad4cdb0f6c663003eaf719c_MENU_w400.jpg&w=256&q=75" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110 image-filter" alt="Gradation">
                             </div>
                             <div class="flex-1 pt-1">
                                 <div class="flex justify-between items-baseline mb-2">
@@ -369,7 +406,7 @@
                         <!-- 美爪フレンチ -->
                         <div class="menu-item group cursor-pointer flex gap-4 items-start fade-in-up">
                             <div class="w-20 h-20 md:w-24 md:h-24 flex-shrink-0 overflow-hidden shadow-sm">
-                                <img src="https://nailie.jp/_next/image?url=https%3A%2F%2Fproduction-nailie-api-default.s3.amazonaws.com%2F5861f1cd9df063b3ccb5bf5740dfd2b0_MENU_w400.jpg&w=256&q=75" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" alt="French">
+                                <img src="https://nailie.jp/_next/image?url=https%3A%2F%2Fproduction-nailie-api-default.s3.amazonaws.com%2F5861f1cd9df063b3ccb5bf5740dfd2b0_MENU_w400.jpg&w=256&q=75" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110 image-filter" alt="French">
                             </div>
                             <div class="flex-1 pt-1">
                                 <div class="flex justify-between items-baseline mb-2">
@@ -393,7 +430,7 @@
                         <!-- マグネット -->
                         <div class="menu-item group cursor-pointer flex gap-4 items-start fade-in-up">
                             <div class="w-20 h-20 md:w-24 md:h-24 flex-shrink-0 overflow-hidden shadow-sm">
-                                <img src="https://nailie.jp/_next/image?url=https%3A%2F%2Fproduction-nailie-api-default.s3.amazonaws.com%2F43e34577876918d83d789fd420972997_MENU_w400.jpg&w=256&q=75" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" alt="Magnet">
+                                <img src="https://nailie.jp/_next/image?url=https%3A%2F%2Fproduction-nailie-api-default.s3.amazonaws.com%2F43e34577876918d83d789fd420972997_MENU_w400.jpg&w=256&q=75" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110 image-filter" alt="Magnet">
                             </div>
                             <div class="flex-1 pt-1">
                                 <div class="flex justify-between items-baseline mb-2">
@@ -407,7 +444,7 @@
                         <!-- おまかせシンプル -->
                         <div class="menu-item group cursor-pointer flex gap-4 items-start fade-in-up">
                             <div class="w-20 h-20 md:w-24 md:h-24 flex-shrink-0 overflow-hidden shadow-sm">
-                                <img src="https://nailie.jp/_next/image?url=https%3A%2F%2Fproduction-nailie-api-default.s3.amazonaws.com%2F3782343732bce8f65f8105cfbee4c206_MENU_w400.jpg&w=256&q=75" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" alt="Omakase Simple">
+                                <img src="https://nailie.jp/_next/image?url=https%3A%2F%2Fproduction-nailie-api-default.s3.amazonaws.com%2F3782343732bce8f65f8105cfbee4c206_MENU_w400.jpg&w=256&q=75" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110 image-filter" alt="Omakase Simple">
                             </div>
                             <div class="flex-1 pt-1">
                                 <div class="flex justify-between items-baseline mb-2">
@@ -421,7 +458,7 @@
                         <!-- おまかせパーツ多め -->
                         <div class="menu-item group cursor-pointer flex gap-4 items-start fade-in-up">
                             <div class="w-20 h-20 md:w-24 md:h-24 flex-shrink-0 overflow-hidden shadow-sm">
-                                <img src="https://nailie.jp/_next/image?url=https%3A%2F%2Fproduction-nailie-api-default.s3.amazonaws.com%2F48c27cee53aeaffd7c0f59b72c6ca413_MENU_w400.jpg&w=256&q=75" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" alt="Omakase Parts">
+                                <img src="https://nailie.jp/_next/image?url=https%3A%2F%2Fproduction-nailie-api-default.s3.amazonaws.com%2F48c27cee53aeaffd7c0f59b72c6ca413_MENU_w400.jpg&w=256&q=75" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110 image-filter" alt="Omakase Parts">
                             </div>
                             <div class="flex-1 pt-1">
                                 <div class="flex justify-between items-baseline mb-2">
@@ -435,7 +472,7 @@
                         <!-- 持ち込み -->
                         <div class="menu-item group cursor-pointer flex gap-4 items-start fade-in-up">
                             <div class="w-20 h-20 md:w-24 md:h-24 flex-shrink-0 overflow-hidden shadow-sm">
-                                <img src="https://nailie.jp/_next/image?url=https%3A%2F%2Fproduction-nailie-api-default.s3.amazonaws.com%2F387239cb2df2f29922eaa38a736952f5_MENU_w400.jpg&w=256&q=75" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" alt="Mochikomi">
+                                <img src="https://nailie.jp/_next/image?url=https%3A%2F%2Fproduction-nailie-api-default.s3.amazonaws.com%2F387239cb2df2f29922eaa38a736952f5_MENU_w400.jpg&w=256&q=75" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110 image-filter" alt="Mochikomi">
                             </div>
                             <div class="flex-1 pt-1">
                                 <div class="flex justify-between items-baseline mb-2">
@@ -519,7 +556,7 @@
         </div>
     </section>
 
-    <!-- Information -->
+    <!-- Information (共通フィルター適用) -->
     <section id="info" class="py-32 md:py-40 bg-mua-white relative z-10">
         <div class="container mx-auto px-6 md:px-10 flex flex-col md:flex-row gap-12 md:gap-20">
             
@@ -550,7 +587,7 @@
             <div class="w-full md:w-1/2 mt-4 md:mt-0 reveal-img-wrapper aspect-square md:aspect-[4/5]">
                 <div class="reveal-overlay"></div>
                 <img src="https://images.unsplash.com/photo-1497366216548-37526070297c?q=80&w=1200&auto=format&fit=crop" 
-                     alt="Salon Interior" class="reveal-img grayscale-[10%]">
+                     alt="Salon Interior" class="reveal-img image-filter">
             </div>
         </div>
     </section>
@@ -743,24 +780,6 @@
                     }
                 );
             });
-
-            // 5. テキスト分割表示
-            const splitText = document.querySelector('.split-text');
-            if (splitText) {
-                gsap.fromTo(splitText, 
-                    { y: 30, opacity: 0 },
-                    {
-                        y: 0,
-                        opacity: 1,
-                        duration: 1.2,
-                        ease: 'power4.out',
-                        scrollTrigger: {
-                            trigger: '#concept',
-                            start: 'top 80%'
-                        }
-                    }
-                );
-            }
 
             // 6. Works パララックス (PCのみ適用)
             if (window.matchMedia("(min-width: 768px)").matches) {
