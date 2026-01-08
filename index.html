@@ -68,7 +68,7 @@
             background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='1'/%3E%3C/svg%3E");
         }
 
-        /* 共通画像フィルター (おしゃれな雰囲気統一) */
+        /* 共通画像フィルター */
         .image-filter {
             filter: grayscale(20%) sepia(10%) brightness(95%) contrast(90%);
             transition: filter 0.5s ease;
@@ -76,11 +76,10 @@
         .group:hover .image-filter {
             filter: grayscale(0%) sepia(0%) brightness(100%) contrast(100%);
         }
-        /* ヒーロー背景用はホバー解除しない */
+        /* ヒーロー背景用 */
         .hero-bg-filter {
              filter: grayscale(20%) sepia(10%) brightness(80%) contrast(90%);
         }
-
 
         /* 画像アニメーション */
         .reveal-img-wrapper {
@@ -112,7 +111,7 @@
             letter-spacing: 0.2em;
         }
 
-        /* スクロールバー非表示 (横スクロール用) */
+        /* スクロールバー非表示 */
         .no-scrollbar::-webkit-scrollbar { display: none; }
         .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
 
@@ -139,7 +138,6 @@
                 break-inside: avoid;
                 margin-bottom: 1rem;
             }
-            /* 偶数番目のアイテムを少し下にずらす風に見せるための余白調整 */
             .masonry-item:nth-child(even) {
                 margin-top: 2rem; 
             }
@@ -209,7 +207,10 @@
     <section id="hero-section" class="relative h-screen w-full overflow-hidden bg-mua-black m-0 p-0">
         <!-- 背景画像 (パララックス効果用) -->
         <div id="hero-bg" class="absolute inset-0 w-full h-[110%] -top-[5%]">
-            <img src="./IMG_0540 3.png" 
+            <!-- 
+                ★重要: 画像ファイル名を 'hero.jpg' に変更してください (元の IMG_0540 3.JPG)
+            -->
+            <img src="./hero.jpg" 
                  onerror="this.src='https://images.unsplash.com/photo-1519014816548-bf5fe059e98b?q=80&w=2070&auto=format&fit=crop'"
                  alt="MUA Atmosphere" 
                  class="w-full h-full object-cover hero-bg-filter">
@@ -217,14 +218,16 @@
         
         <div class="absolute inset-0 flex flex-col justify-center items-center text-center z-10 px-4">
             <div id="hero-content" class="flex flex-col items-center w-full max-w-sm">
-                <!-- ロゴ (ロゴ白.pngを使用) -->
+                <!-- 
+                    ★重要: ロゴファイル名を 'logo.png' に変更してください (元の ロゴ白.png)
+                -->
                 <div class="w-56 md:w-96 mb-8 md:mb-12 relative opacity-0 transform scale-95 flex justify-center" id="hero-logo">
-                    <!-- 白色ロゴの視認性を高めるためドロップシャドウを強化 -->
-                    <img src="./ロゴ白.png" 
+                    <img src="./logo.png" 
                          onerror="this.classList.add('error')"
                          alt="MUA nailsalon" 
                          class="w-full h-auto drop-shadow-[0_4px_6px_rgba(0,0,0,0.5)] block">
-                    <!-- ロゴ画像がない場合のテキストフォールバック -->
+                    
+                    <!-- ロゴ画像がない場合のテキスト -->
                     <h1 class="logo-text-fallback font-en text-7xl md:text-9xl tracking-widest text-white m-0 leading-none font-thin drop-shadow-lg">
                         MUA
                     </h1>
@@ -252,20 +255,21 @@
     <section id="concept" class="py-24 md:py-60 px-6 md:px-0 bg-mua-white relative z-10 overflow-hidden">
         <div class="max-w-5xl mx-auto relative concept-overlap-wrapper">
             
-            <!-- ネイル部屋の画像 (PC: 左側配置, スマホ: 上部配置) -->
+            <!-- ネイル部屋の画像 -->
+            <!-- 
+                ★重要: 画像ファイル名を 'concept.jpg' に変更してください (元の ネイル部屋.jpg)
+            -->
             <div class="concept-image-box relative mb-12 md:mb-0 reveal-img-wrapper aspect-[4/3] md:aspect-[16/9]">
                 <div class="reveal-overlay"></div>
-                <!-- 画像本体 (共通フィルター適用) -->
-                <img src="./ネイル部屋.jpg" 
+                <img src="./concept.jpg" 
                      onerror="this.src='https://images.unsplash.com/photo-1519014816548-bf5fe059e98b?q=80&w=2070&auto=format&fit=crop'"
                      alt="Nail Room" 
                      class="reveal-img object-cover w-full h-full image-filter">
             </div>
 
-            <!-- テキストコンテンツ (PC: 右側重なり配置, スマホ: 下部重なり配置) -->
+            <!-- テキストコンテンツ -->
             <div class="concept-text-box relative -mt-20 md:-mt-0 bg-white/90 md:bg-white/95 backdrop-blur-sm p-8 md:p-16 shadow-lg md:shadow-xl border border-white/50 md:border-none mx-4 md:mx-0 fade-in-up">
                 
-                <!-- スマホ用タイトル装飾 -->
                 <span class="md:hidden font-en text-xs tracking-widest text-mua-gray block mb-4 text-center">Concept</span>
 
                 <h2 class="font-jp text-2xl md:text-3xl mb-8 md:mb-10 tracking-wide font-medium m-0 text-mua-black leading-relaxed text-center md:text-left">
@@ -286,7 +290,6 @@
                     </p>
                 </div>
 
-                <!-- 縦書きタイトル (PCのみ) -->
                 <div class="hidden md:block absolute -right-12 top-0 h-full w-px bg-mua-black/10">
                     <span class="absolute top-0 -right-4 vertical-text font-en text-sm tracking-widest text-mua-gray h-full flex items-center">Concept</span>
                 </div>
@@ -295,7 +298,7 @@
         </div>
     </section>
 
-    <!-- Works (指定画像に変更 & 共通フィルター) -->
+    <!-- Works -->
     <section id="works" class="py-32 md:py-40 bg-mua-white relative z-10 overflow-hidden">
         <div class="container mx-auto px-6 md:px-12 relative">
             
@@ -307,12 +310,12 @@
                 </a>
             </div>
 
-            <!-- おしゃれな配置 (Masonry / Staggered Grid) -->
             <div class="grid grid-cols-2 md:grid-cols-2 gap-4 md:gap-32 w-full">
+                <!-- works画像を works1.png ~ works4.png として保存してください -->
                 
-                <!-- Left Column / Odd Items -->
+                <!-- Left Column -->
                 <div class="flex flex-col gap-8 md:gap-40 mt-0 md:mt-24">
-                    <!-- Item 1 (works1.png) -->
+                    <!-- Item 1 -->
                     <div class="group cursor-pointer w-full md:w-4/5 ml-auto fade-in-up">
                         <div class="reveal-img-wrapper aspect-[3/4]">
                             <div class="reveal-overlay"></div>
@@ -324,7 +327,7 @@
                         </div>
                     </div>
 
-                    <!-- Item 3 (works3.png) -->
+                    <!-- Item 3 -->
                     <div class="group cursor-pointer w-full md:w-4/5 mr-auto mt-8 md:mt-0 fade-in-up">
                         <div class="reveal-img-wrapper aspect-[3/4]">
                             <div class="reveal-overlay"></div>
@@ -333,9 +336,9 @@
                     </div>
                 </div>
 
-                <!-- Right Column / Even Items -->
+                <!-- Right Column -->
                 <div class="flex flex-col gap-8 md:gap-40 mt-12 md:-mt-24 parallax-col">
-                    <!-- Item 2 (works2.png) -->
+                    <!-- Item 2 -->
                     <div class="group cursor-pointer w-full md:w-4/5 mr-auto fade-in-up">
                         <div class="reveal-img-wrapper aspect-[3/4] md:aspect-[4/5]">
                             <div class="reveal-overlay"></div>
@@ -343,7 +346,7 @@
                         </div>
                     </div>
 
-                    <!-- Item 4 (works4.png) -->
+                    <!-- Item 4 -->
                     <div class="group cursor-pointer w-full md:w-4/5 ml-auto mt-8 md:mt-0 fade-in-up">
                         <div class="reveal-img-wrapper aspect-[3/4]">
                             <div class="reveal-overlay"></div>
@@ -355,9 +358,11 @@
         </div>
     </section>
 
-    <!-- Menu with Fixed Marble Background (共通フィルター適用) -->
-    <section id="menu" class="py-32 md:py-48 relative z-10 bg-fixed-parallax" style="background-image: url('./背景 (2).png');">
-        <!-- 背景画像オーバーレイ -->
+    <!-- Menu with Fixed Marble Background -->
+    <!-- 
+        ★重要: 画像ファイル名を 'bg-marble.png' に変更してください (元の 背景 (2).png)
+    -->
+    <section id="menu" class="py-32 md:py-48 relative z-10 bg-fixed-parallax" style="background-image: url('./bg-marble.png');">
         <div class="absolute inset-0 bg-white/80 backdrop-blur-[3px]"></div>
 
         <div class="container mx-auto px-6 md:px-10 max-w-5xl relative z-20">
